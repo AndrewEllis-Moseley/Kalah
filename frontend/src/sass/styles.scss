@@ -1,0 +1,142 @@
+@import "./variables";
+@import "./mixins";
+
+$player-one-color: red;
+$player-two-color: green;
+
+.hidden {
+  display: none;
+}
+
+#form-container {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  border: 2px solid grey;
+  grid-template-areas: ". . . . . . . ." ". . message message message message . ." ". . player-name player-name play-button play-button . ." ". . rules rules rules rules . ." ". . rules rules rules rules . ." ". . rules rules rules rules . ." ". . rules rules rules rules . ." ". . . . . . . .";
+}
+
+.message {
+  grid-area: message;
+}
+
+.player-name {
+  grid-area: player-name;
+}
+
+.play-button {
+  grid-area: play-button;
+}
+
+.rules {
+  grid-area: rules;
+}
+
+#game-container {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(13, 1fr);
+  grid-template-areas: ". . . header header header header . . ." ". . . status status status status . . ." ". player-one-area player-one-area player-one-area . . . . . ." ". . . . . . . . . ." ". . player-two-pit-12 player-two-pit-11 player-two-pit-10 player-two-pit-9 player-two-pit-8 player-two-pit-7 . ." ". player-two-house . . . . . . player-one-house ." ". . player-one-pit-1 player-one-pit-2 player-one-pit-3 player-one-pit-4 player-one-pit-5 player-one-pit-6 . ." ". . . . . . . . . ." ". . . . . . player-two-area player-two-area player-two-area ." ". . . . . . . . . ." ". . . . . . . . . ." ". . . . . . . . . .";
+}
+
+.header {
+  grid-area: header;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.status {
+  grid-area: status;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.player-one-area {
+  grid-area: player-one-area;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.player-two-house {
+  grid-area: player-two-house;
+  @include playerHouse($player-two-color);
+}
+
+.player-one-pit-1 {
+  grid-area: player-one-pit-1;
+  @include playerPit($player-one-color);
+}
+
+.player-one-pit-2 {
+  grid-area: player-one-pit-2;
+  @include playerPit($player-one-color);
+}
+
+.player-one-pit-3 {
+  grid-area: player-one-pit-3;
+  @include playerPit($player-one-color);
+}
+
+.player-one-pit-4 {
+  grid-area: player-one-pit-4;
+  @include playerPit($player-one-color);
+}
+
+.player-one-pit-5 {
+  grid-area: player-one-pit-5;
+  @include playerPit($player-one-color);
+}
+
+.player-one-pit-6 {
+  grid-area: player-one-pit-6;
+  @include playerPit($player-one-color);
+}
+
+.player-one-house {
+  grid-area: player-one-house;
+  @include playerHouse($player-one-color);
+}
+
+.player-two-pit-7 {
+  grid-area: player-two-pit-7;
+  @include playerPit($player-two-color);
+}
+
+.player-two-pit-8 {
+  grid-area: player-two-pit-8;
+  @include playerPit($player-two-color);
+}
+
+.player-two-pit-9 {
+  grid-area: player-two-pit-9;
+  @include playerPit($player-two-color);
+}
+
+.player-two-pit-10 {
+  grid-area: player-two-pit-10;
+  @include playerPit($player-two-color);
+}
+
+.player-two-pit-11 {
+  grid-area: player-two-pit-11;
+  @include playerPit($player-two-color);
+}
+
+.player-two-pit-12 {
+  grid-area: player-two-pit-12;
+  @include playerPit($player-two-color);
+}
+
+.player-two-area {
+  grid-area: player-two-area;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+}

@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: Andrew Ellis-Moseley
+Build-Jdk: 11.0.2
+Implementation-Title: kalah
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: com.aem.backbase
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-boot
+ -starter-parent/kalah
+Created-By: Maven Integration for Eclipse
+

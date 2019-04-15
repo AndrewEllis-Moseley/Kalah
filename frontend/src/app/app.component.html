@@ -1,0 +1,40 @@
+<div id="form-container" *ngIf="!playerConnected">
+  <div class="message">WELCOME TO KALAH</div>
+  <div class="player-name">
+    <label for="">Enter Player Name:</label> <input #playerName type="text" />
+  </div>
+
+  <div class="play-button">
+    <P></P><button (click)="connect(playerName.value)">Let's Play</button>
+  </div>
+  <div class="rules">
+    <h2>The Rules:</h2>
+    <p>The rules of Kalah are simple!</p>
+  </div>
+</div>
+
+<div id="game-container" *ngIf="playerConnected">
+  <div class="header">Welcome - Game ID: {{ gameId }}</div>
+  <div class="status">
+    <h2>Status:</h2>
+    {{ status }}
+  </div>
+  <div class="player-one-area">Player One: {{ playerOneName }}</div>
+
+  <div class="player-one-pit-1" (click)="move(0)">{{ pits[0] }}</div>
+  <div class="player-one-pit-2" (click)="move(1)">{{ pits[1] }}</div>
+  <div class="player-one-pit-3" (click)="move(2)">{{ pits[2] }}</div>
+  <div class="player-one-pit-4" (click)="move(3)">{{ pits[3] }}</div>
+  <div class="player-one-pit-5" (click)="move(4)">{{ pits[4] }}</div>
+  <div class="player-one-pit-6" (click)="move(5)">{{ pits[5] }}</div>
+  <div class="player-one-house">{{ pits[6] }}</div>
+
+  <div class="player-two-pit-7" (click)="move(7)">{{ pits[7] }}</div>
+  <div class="player-two-pit-8" (click)="move(8)">{{ pits[8] }}</div>
+  <div class="player-two-pit-9" (click)="move(9)">{{ pits[9] }}</div>
+  <div class="player-two-pit-10" (click)="move(10)">{{ pits[10] }}</div>
+  <div class="player-two-pit-11" (click)="move(11)">{{ pits[11] }}</div>
+  <div class="player-two-pit-12" (click)="move(12)">{{ pits[12] }}</div>
+  <div class="player-two-house">{{ pits[13] }}</div>
+  <div class="player-two-area">PlayerTwo: {{ playerTwoName }}</div>
+</div>
