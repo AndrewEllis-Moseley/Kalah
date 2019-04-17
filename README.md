@@ -26,8 +26,9 @@ As the application uses Spring it already has an embedded Tomcat:
 
 java -jar web/target/web-0.0.1-SNAPSHOT.jar or mvnw spring-boot:run
 
-# The Rules
-There are two players
+# The Game
+Two players are required to start the game, there is no AI
+
 To start game:
 1. Navigate to http://localhost:8080
 2. Enter the player name and click Let's Player 
