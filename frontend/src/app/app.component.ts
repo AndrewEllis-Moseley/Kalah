@@ -45,11 +45,6 @@ export class AppComponent {
         `/topic/connection/${that.sessionId}`,
         payload => {
           console.log("Subscribe: Incoming message: " + payload.body);
-          if (payload.body) {
-            let message = JSON.parse(payload.body);
-            that.status = message.status;
-            that.gameId = message.gameId;
-          }
         },
         error => {
           console.log("Subscribe: error: " + error);
@@ -66,10 +61,6 @@ export class AppComponent {
         }
       );
 
-      // that.stompClient.subscribe(`/topic/turn/${that.sessionId}`, turn => {
-      //   that.setTurn(turn.body);
-      // });
-
       that.stompClient.subscribe(
         `/topic/updateBoard/${that.sessionId}`,
         view => {
@@ -85,6 +76,7 @@ export class AppComponent {
     console.log("GAME: ", game);
     this.pits = game.board.pits;
     this.status = game.gameStatus;
+    this.gameId = game.gameId;
 
     if (!this.bothNamesSet) {
       let name = JSON.parse(game.players[0].name);

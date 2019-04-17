@@ -4,7 +4,6 @@
 package com.aem.backbase.kalah.domain;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,14 +19,14 @@ public class Game {
 	private String gameStatus;
 	private static final int PLAYER_ONE_ID = 1;
 	ArrayList<Player> players = new ArrayList<>();
-	Random random = new Random();
+	private static int GAME_ID = 0;
 	private int activePlayer = 1;
 	
 	@Autowired
 	private Board board;
 	
 	public Game(String name, String session) {
-		this.setGameId(random.nextInt(300));
+		this.setGameId(GAME_ID++);
 		this.setGameStatus(Status.AWAITING_PLAYER.getStatus());
 		this.addPlayer(PLAYER_ONE_ID, name, session);
 		this.board = new Board();

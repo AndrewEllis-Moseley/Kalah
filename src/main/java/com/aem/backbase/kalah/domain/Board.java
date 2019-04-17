@@ -16,7 +16,6 @@ public class Board {
 	private static final int NUMBER_OF_STONES = 6;
 	private static final int NUMBER_OF_PITS = 14;
 	
-//	ArrayList<Integer> pits = new ArrayList<Integer>();
 	HashMap<Integer, Integer> pits = new HashMap<>();
 	
 	@Autowired
@@ -36,7 +35,6 @@ public class Board {
 
 	public void setPits(HashMap<Integer, Integer> pits) {
 		this.pits = pits;
-	}
-	
+	}	
 	
 }

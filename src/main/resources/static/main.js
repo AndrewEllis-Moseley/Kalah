@@ -30,7 +30,7 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"form-container\" *ngIf=\"!playerConnected\">\n  <div class=\"message\">WELCOME TO KALAH</div>\n  <div class=\"player-name\">\n    <label for=\"\">Enter Player Name:</label> <input #playerName type=\"text\" />\n  </div>\n\n  <div class=\"play-button\">\n    <P></P><button (click)=\"connect(playerName.value)\">Let's Play</button>\n  </div>\n  <div class=\"rules\">\n    <h2>The Rules:</h2>\n    <p>The rules of Kalah are simple!</p>\n  </div>\n</div>\n\n<div id=\"game-container\" *ngIf=\"playerConnected\">\n  <div class=\"header\">Welcome - Game ID: {{ gameId }}</div>\n  <div class=\"status\">\n    <h2>Status:</h2>\n    {{ status }}\n  </div>\n  <div class=\"player-one-area\">Player One: {{ playerOneName }}</div>\n\n  <div class=\"player-one-pit-1\" (click)=\"move(0)\">{{ pits[0] }}</div>\n  <div class=\"player-one-pit-2\" (click)=\"move(1)\">{{ pits[1] }}</div>\n  <div class=\"player-one-pit-3\" (click)=\"move(2)\">{{ pits[2] }}</div>\n  <div class=\"player-one-pit-4\" (click)=\"move(3)\">{{ pits[3] }}</div>\n  <div class=\"player-one-pit-5\" (click)=\"move(4)\">{{ pits[4] }}</div>\n  <div class=\"player-one-pit-6\" (click)=\"move(5)\">{{ pits[5] }}</div>\n  <div class=\"player-one-house\">{{ pits[6] }}</div>\n\n  <div class=\"player-two-pit-7\" (click)=\"move(7)\">{{ pits[7] }}</div>\n  <div class=\"player-two-pit-8\" (click)=\"move(8)\">{{ pits[8] }}</div>\n  <div class=\"player-two-pit-9\" (click)=\"move(9)\">{{ pits[9] }}</div>\n  <div class=\"player-two-pit-10\" (click)=\"move(10)\">{{ pits[10] }}</div>\n  <div class=\"player-two-pit-11\" (click)=\"move(11)\">{{ pits[11] }}</div>\n  <div class=\"player-two-pit-12\" (click)=\"move(12)\">{{ pits[12] }}</div>\n  <div class=\"player-two-house\">{{ pits[13] }}</div>\n  <div class=\"player-two-area\">PlayerTwo: {{ playerTwoName }}</div>\n</div>\n"
+module.exports = "<div id=\"form-container\" *ngIf=\"!playerConnected\">\n  <div class=\"message\">Welcome to Kalah</div>\n  <div class=\"player\">\n    <label for=\"\">Enter Player Name:</label>\n    <input #playerName type=\"text\" /><button\n      (click)=\"connect(playerName.value)\"\n    >\n      Let's Play\n    </button>\n  </div>\n  <div class=\"rules\">\n    <h2>The Game</h2>\n    <p>\n      Kalah is a two player, turn-based game. It is played with a board\n      consisting of 12 small holes, two scoring wells and 72 stones. Each player\n      (P1: North and P2: South) owns the six pits closest to them (numbered 1 to\n      6) and one scoring house.\n    </p>\n    <h2>The Rules:</h2>\n    <ul>\n      <li>Start of Play</li>\n      <p>\n        The game starts with 6 stones in each of the pit with player 1 going\n        first.\n      </p>\n      <li>The Move</li>\n      <p>\n        The player whose turn it is chooses one of the 6 pits they own which is\n        not empty. The stone from that pit are removed and deposited one by one\n        into the subsequent pits moving counter clockwise, skipping only the\n        opponent's scoring house.\n      </p>\n\n      <p>\n        If the last stone is deposited into the current player's scoring house,\n        that player must take another turn.\n      </p>\n\n      <p>\n        If the last stone is deposited into an empty pit owned by the current\n        player and the pit opposite is not empty, the player captures all of the\n        stones in the opposite pit plus the capturing stones, which go into the\n        player's scoring house.\n      </p>\n\n      <p>\n        The player's turn ends with a capture or when the last stone is\n        deposited into a pit other than the player's scoring house.\n      </p>\n      <li>End Game</li>\n      <p>\n        If it is a player's turn and all of his pits are empty, then he has no\n        legal move and the game ends. All stones which are not in one of the\n        scoring wells are deposited into the house of the opposing player. The\n        player whose scoring house contains the most stones is the winner.\n      </p>\n    </ul>\n  </div>\n</div>\n\n<div id=\"game-container\" *ngIf=\"playerConnected\">\n  <div class=\"header\">Welcome - Game ID: {{ gameId }}</div>\n  <div class=\"player-one-pit-1\" (click)=\"move(1)\">{{ pits[1] }}</div>\n  <div class=\"player-one-pit-0\" (click)=\"move(0)\">{{ pits[0] }}</div>\n  <div class=\"player-one-pit-2\" (click)=\"move(2)\">{{ pits[2] }}</div>\n  <div class=\"player-one-pit-3\" (click)=\"move(3)\">{{ pits[3] }}</div>\n  <div class=\"player-one-pit-4\" (click)=\"move(4)\">{{ pits[4] }}</div>\n  <div class=\"player-one-pit-5\" (click)=\"move(5)\">{{ pits[5] }}</div>\n  <div class=\"player-two-pit-7\" (click)=\"move(7)\">{{ pits[7] }}</div>\n  <div class=\"player-two-pit-8\" (click)=\"move(8)\">{{ pits[8] }}</div>\n  <div class=\"player-two-pit-9\" (click)=\"move(9)\">{{ pits[9] }}</div>\n  <div class=\"player-two-pit-10\" (click)=\"move(10)\">{{ pits[10] }}</div>\n  <div class=\"player-two-pit-11\" (click)=\"move(11)\">{{ pits[11] }}</div>\n  <div class=\"player-two-pit-12\" (click)=\"move(12)\">{{ pits[12] }}</div>\n  <div class=\"player-two-house\">{{ pits[13] }}</div>\n  <div class=\"player-one-house\">{{ pits[6] }}</div>\n  <div class=\"player-one-area\">\n    <h2>Player One: {{ playerOneName }} - RED</h2>\n  </div>\n  <div class=\"player-two-area\">\n    <h2>Player Two: {{ playerTwoName }} - GREEN</h2>\n  </div>\n  <div class=\"status\">Status: {{ status }}</div>\n</div>\n"
 
 /***/ }),
 
@@ -93,11 +93,6 @@ var AppComponent = /** @class */ (function () {
             console.log("Going to subscribe ... ");
             that.stompClient.subscribe("/topic/connection/" + that.sessionId, function (payload) {
                 console.log("Subscribe: Incoming message: " + payload.body);
-                if (payload.body) {
-                    var message = JSON.parse(payload.body);
-                    that.status = message.status;
-                    that.gameId = message.gameId;
-                }
             }, function (error) {
                 console.log("Subscribe: error: " + error);
             }, function () {
@@ -106,9 +101,6 @@ var AppComponent = /** @class */ (function () {
             that.stompClient.subscribe("/topic/connection/" + that.sessionId, function (status) {
                 that.showStatus(JSON.parse(status.body));
             });
-            // that.stompClient.subscribe(`/topic/turn/${that.sessionId}`, turn => {
-            //   that.setTurn(turn.body);
-            // });
             that.stompClient.subscribe("/topic/updateBoard/" + that.sessionId, function (view) {
                 that.updateBoard(JSON.parse(view.body));
             });
@@ -119,6 +111,7 @@ var AppComponent = /** @class */ (function () {
         console.log("GAME: ", game);
         this.pits = game.board.pits;
         this.status = game.gameStatus;
+        this.gameId = game.gameId;
         if (!this.bothNamesSet) {
             var name_1 = JSON.parse(game.players[0].name);
             this.playerOneName = name_1.playerName;

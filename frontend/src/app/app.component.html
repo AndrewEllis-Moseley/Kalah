@@ -1,34 +1,71 @@
 <div id="form-container" *ngIf="!playerConnected">
-  <div class="message">WELCOME TO KALAH</div>
-  <div class="player-name">
-    <label for="">Enter Player Name:</label> <input #playerName type="text" />
-  </div>
-
-  <div class="play-button">
-    <P></P><button (click)="connect(playerName.value)">Let's Play</button>
+  <div class="message">Welcome to Kalah</div>
+  <div class="player">
+    <label for="">Enter Player Name:</label>
+    <input #playerName type="text" /><button
+      (click)="connect(playerName.value)"
+    >
+      Let's Play
+    </button>
   </div>
   <div class="rules">
+    <h2>The Game</h2>
+    <p>
+      Kalah is a two player, turn-based game. It is played with a board
+      consisting of 12 small holes, two scoring wells and 72 stones. Each player
+      (P1: North and P2: South) owns the six pits closest to them (numbered 1 to
+      6) and one scoring house.
+    </p>
     <h2>The Rules:</h2>
-    <p>The rules of Kalah are simple!</p>
+    <ul>
+      <li>Start of Play</li>
+      <p>
+        The game starts with 6 stones in each of the pit with player 1 going
+        first.
+      </p>
+      <li>The Move</li>
+      <p>
+        The player whose turn it is chooses one of the 6 pits they own which is
+        not empty. The stone from that pit are removed and deposited one by one
+        into the subsequent pits moving counter clockwise, skipping only the
+        opponent's scoring house.
+      </p>
+
+      <p>
+        If the last stone is deposited into the current player's scoring house,
+        that player must take another turn.
+      </p>
+
+      <p>
+        If the last stone is deposited into an empty pit owned by the current
+        player and the pit opposite is not empty, the player captures all of the
+        stones in the opposite pit plus the capturing stones, which go into the
+        player's scoring house.
+      </p>
+
+      <p>
+        The player's turn ends with a capture or when the last stone is
+        deposited into a pit other than the player's scoring house.
+      </p>
+      <li>End Game</li>
+      <p>
+        If it is a player's turn and all of his pits are empty, then he has no
+        legal move and the game ends. All stones which are not in one of the
+        scoring wells are deposited into the house of the opposing player. The
+        player whose scoring house contains the most stones is the winner.
+      </p>
+    </ul>
   </div>
 </div>
 
 <div id="game-container" *ngIf="playerConnected">
   <div class="header">Welcome - Game ID: {{ gameId }}</div>
-  <div class="status">
-    <h2>Status:</h2>
-    {{ status }}
-  </div>
-  <div class="player-one-area">Player One: {{ playerOneName }}</div>
-
-  <div class="player-one-pit-1" (click)="move(0)">{{ pits[0] }}</div>
-  <div class="player-one-pit-2" (click)="move(1)">{{ pits[1] }}</div>
-  <div class="player-one-pit-3" (click)="move(2)">{{ pits[2] }}</div>
-  <div class="player-one-pit-4" (click)="move(3)">{{ pits[3] }}</div>
-  <div class="player-one-pit-5" (click)="move(4)">{{ pits[4] }}</div>
-  <div class="player-one-pit-6" (click)="move(5)">{{ pits[5] }}</div>
-  <div class="player-one-house">{{ pits[6] }}</div>
-
+  <div class="player-one-pit-1" (click)="move(1)">{{ pits[1] }}</div>
+  <div class="player-one-pit-0" (click)="move(0)">{{ pits[0] }}</div>
+  <div class="player-one-pit-2" (click)="move(2)">{{ pits[2] }}</div>
+  <div class="player-one-pit-3" (click)="move(3)">{{ pits[3] }}</div>
+  <div class="player-one-pit-4" (click)="move(4)">{{ pits[4] }}</div>
+  <div class="player-one-pit-5" (click)="move(5)">{{ pits[5] }}</div>
   <div class="player-two-pit-7" (click)="move(7)">{{ pits[7] }}</div>
   <div class="player-two-pit-8" (click)="move(8)">{{ pits[8] }}</div>
   <div class="player-two-pit-9" (click)="move(9)">{{ pits[9] }}</div>
@@ -36,5 +73,12 @@
   <div class="player-two-pit-11" (click)="move(11)">{{ pits[11] }}</div>
   <div class="player-two-pit-12" (click)="move(12)">{{ pits[12] }}</div>
   <div class="player-two-house">{{ pits[13] }}</div>
-  <div class="player-two-area">PlayerTwo: {{ playerTwoName }}</div>
+  <div class="player-one-house">{{ pits[6] }}</div>
+  <div class="player-one-area">
+    <h2>Player One: {{ playerOneName }} - RED</h2>
+  </div>
+  <div class="player-two-area">
+    <h2>Player Two: {{ playerTwoName }} - GREEN</h2>
+  </div>
+  <div class="status">Status: {{ status }}</div>
 </div>
