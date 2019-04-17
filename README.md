@@ -34,7 +34,7 @@ To start game:
 2. Enter the player name and click Let's Player 
 3. In another browser window (or from another machine) repeat step 1-2
 4. Once two players have joined the game begins, the status will display which player's turn it is
-5. Play until the application notifies you that the game is over
+5. Play until the application notifies you that a player has won
 
 # Unit Tests 
 To Be Updated
