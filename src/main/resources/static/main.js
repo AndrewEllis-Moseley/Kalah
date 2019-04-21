@@ -67,7 +67,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var AppComponent = /** @class */ (function () {
     function AppComponent() {
-        this.endpoint = "/kalah-websocket";
+        this.endpoint = "/ws-kalah-game";
         this.title = "Kalah";
         this.sessionId = Math.random()
             .toString(36)
@@ -87,20 +87,7 @@ var AppComponent = /** @class */ (function () {
         var ws = new sockjs_client__WEBPACK_IMPORTED_MODULE_3__(this.endpoint);
         this.stompClient = stompjs__WEBPACK_IMPORTED_MODULE_2__["over"](ws);
         var that = this;
-        console.log("Setting up connection");
-        console.log("About to connect");
         this.stompClient.connect({}, function (frame) {
-            console.log("Going to subscribe ... ");
-            that.stompClient.subscribe("/topic/connection/" + that.sessionId, function (payload) {
-                console.log("Subscribe: Incoming message: " + payload.body);
-            }, function (error) {
-                console.log("Subscribe: error: " + error);
-            }, function () {
-                console.log("Subscribe, On complete");
-            });
-            that.stompClient.subscribe("/topic/connection/" + that.sessionId, function (status) {
-                that.showStatus(JSON.parse(status.body));
-            });
             that.stompClient.subscribe("/topic/updateBoard/" + that.sessionId, function (view) {
                 that.updateBoard(JSON.parse(view.body));
             });
@@ -108,7 +95,6 @@ var AppComponent = /** @class */ (function () {
         });
     };
     AppComponent.prototype.updateBoard = function (game) {
-        console.log("GAME: ", game);
         this.pits = game.board.pits;
         this.status = game.gameStatus;
         this.gameId = game.gameId;
@@ -123,7 +109,6 @@ var AppComponent = /** @class */ (function () {
         }
     };
     AppComponent.prototype.showStatus = function (message) {
-        console.log("SHOW STATUS CALLED?????", message);
         this.gameId = message.gameId;
     };
     AppComponent.prototype.sendName = function (pn) {

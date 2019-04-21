@@ -12,6 +12,7 @@ import com.aem.backbase.kalah.domain.enums.Status;
 /**
  * @author Andrew Ellis-Moseley
  *
+ * Game class which contains the players, state, id and board
  */
 public class Game {
 	

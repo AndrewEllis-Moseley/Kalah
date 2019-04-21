@@ -4,6 +4,7 @@
 package com.aem.backbase.kalah.service.impl;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ import com.aem.backbase.kalah.service.NotificationService;
 
 /**
  * @author Andrew Ellis-Moseley
+ * 
+ * This service handles creating and join of active games
+ * It also contains the logic for the game
  *
  */
 @Service
@@ -27,13 +31,15 @@ public class GameServiceImpl implements GameService {
 	private static final int PLAYER_TWO_HOUSE_INDEX = 13;
 	private static final int NUMBER_OF_PITS = 14;
 	private static final int EMPTY_PIT = 0;
-	private static final int DIFF_BETWEEN_STONES = 7;
 	
 	static HashMap<Integer, Game> gameList = new HashMap<>();
 	
 	@Autowired
 	private NotificationService notificationService;
 
+	/**
+	 * Either creates a new game or joins a second player to an active game depending on game state
+	 */
 	@Override
 	public Game createGame(String session, String playerName) {
 		if (gameList.size() > 0) {
@@ -45,23 +51,24 @@ public class GameServiceImpl implements GameService {
 					case "In Progress" : 
 					case "Player One Turn" :
 					case "Player Two Turn" :
+					case "Player One Has Another Turn" :
+					case "Player Two Has Another Turn" :
 						return createNewGame(playerName, session);
 						
 						default :
-							return createNewGame(playerName, session);
+							System.out.println("Do nothing");
 				}
 			}
 		}
 		return createNewGame(playerName, session);
 	}
 
-	private Game joinActiveGame(Game game, String playerName, String session) {
-		game.setGameStatus(Status.PLAYER_ONE_TURN.getStatus());
-		game.addPlayer(PLAYER_TWO_ID, playerName, session);
-		notificationService.updatePlayersWithLatestGame(game.getPlayers(), game);
-		return game;
-	}
-
+	/**
+	 * Creates a brand new game with a new Game ID
+	 * @param playerName - player name to be added to game
+	 * @param session - player session to be added
+	 * @return new game object
+	 */
 	private Game createNewGame(String playerName, String session) {
 		Game game = new Game(playerName, session);
 		gameList.put(game.getGameId(), game); 
@@ -69,6 +76,25 @@ public class GameServiceImpl implements GameService {
 		return game;
 	}
 	
+	/**
+	 * Added a second player to a currently active game
+	 * @param game - active game player will join
+	 * @param playerName - player name to be added to active game
+	 * @param session - player session to be added
+	 * @return active game object
+	 */
+	private Game joinActiveGame(Game game, String playerName, String session) {
+		game.setGameStatus(Status.PLAYER_ONE_TURN.getStatus());
+		game.addPlayer(PLAYER_TWO_ID, playerName, session);
+		notificationService.updatePlayersWithLatestGame(game.getPlayers(), game);
+		return game;
+	}
+	
+	/**
+	 * Processes the current players movement of stones on the board from a selected pit.
+	 * This will also check whether the current player has a second go, whether a specific player has
+	 * won the game and notifies both players of the current state.
+	 */
 	@Override
 	public void move(int gameId, int pit) {
 		Game game = gameList.get(gameId);
@@ -103,6 +129,13 @@ public class GameServiceImpl implements GameService {
 		notificationService.updatePlayersWithLatestGame(game.getPlayers(), game);	
 	}
 
+	/**
+	 * Used to update and notify the players as to who's turn it is
+	 * @param activePlayer - the current player making a move
+	 * @param stonesInPit - to check how many stones remain in a pit
+	 * @param pit - the pit in question
+	 * @param game - used to update the status
+	 */
 	private void checkPlayerTurn(Player activePlayer, int stonesInPit, int pit, Game game) {
 		// If active players last stone lands in their own house, notify they have another go
 		if (stonesInPit == EMPTY_PIT && pit == activePlayer.getPlayerHouseIndex()) {
@@ -120,31 +153,67 @@ public class GameServiceImpl implements GameService {
 		}
 	}
 
+	/**
+	 * Checks whether either player has all empty pits before working out the winner
+	 * @param game - used to gather pits and update game status
+	 * @return boolean true if a player has won, else false
+	 */
 	private boolean checkForWinner(Game game) {
 		HashMap<Integer, Integer> pits = game.getBoard().getPits();
 		int stonesRemainingForPlayerOne = 0;
 		int stonesRemainingForPlayerTwo = 0;
 		
-		for (int i=0; i <= 5; i++) {
+		for (int i=0; i < PLAYER_ONE_HOUSE_INDEX; i++) {
 			stonesRemainingForPlayerOne += pits.get(i);
 		}
-		for (int i=7; i <= 12; i++) {
+		for (int i=7; i < PLAYER_TWO_HOUSE_INDEX; i++) {
 			stonesRemainingForPlayerTwo += pits.get(i);
 		}
 		
-		if (stonesRemainingForPlayerOne == 0) {
-			game.setGameStatus(Status.PLAYER_ONE_WINS.getStatus());
+		if (stonesRemainingForPlayerOne == 0 || stonesRemainingForPlayerTwo == 0) {
+			if (stonesRemainingForPlayerOne != 0) {
+				int stonesToAdd = stonesRemainingForPlayerOne + pits.get(PLAYER_ONE_HOUSE_INDEX);
+				pits.replace(PLAYER_ONE_HOUSE_INDEX, stonesToAdd);	
+			} else if (stonesRemainingForPlayerTwo != 0) {
+				int stonesToAdd = stonesRemainingForPlayerTwo + pits.get(PLAYER_TWO_HOUSE_INDEX);
+				pits.replace(PLAYER_TWO_HOUSE_INDEX, stonesToAdd);	
+			}
+			
+			completeBoard(game.getBoard().getPits());
+			
+			if (pits.get(PLAYER_ONE_HOUSE_INDEX) > pits.get(PLAYER_TWO_HOUSE_INDEX)) {
+				game.setGameStatus(Status.PLAYER_ONE_WINS.getStatus());
+			} else {
+				game.setGameStatus(Status.PLAYER_TWO_WINS.getStatus());
+			}
 			notificationService.updatePlayersWithLatestGame(game.getPlayers(), game);
 			return true;
 		}
-		if (stonesRemainingForPlayerTwo == 0) {
-			game.setGameStatus(Status.PLAYER_TWO_WINS.getStatus());
-			notificationService.updatePlayersWithLatestGame(game.getPlayers(), game);
-			return true;
-		}
+		
 		return false;
 	}
 
+	/**
+	 * Completes the board by setting all remaining pits to zero once either player has won
+	 * @param pits - hash map of pits
+	 */
+	private void completeBoard(HashMap<Integer, Integer> pits) {
+		for (Entry<Integer, Integer> pit : pits.entrySet()) {
+			if (pit.getKey().equals(PLAYER_ONE_HOUSE_INDEX) || pit.getKey().equals(PLAYER_TWO_HOUSE_INDEX)) {
+				continue;
+			}
+		    pit.setValue(0);
+		}
+		
+	}
+
+	/**
+	 * When a players final stone lands in an empty pit that player takes the stones
+	 * from that pit as well as all stones in the pit opposite from the opponents side and adds
+	 * them to their house.
+	 * @param game full game object
+	 * @param pit the pit in question
+	 */
 	private void takeAllStones(Game game, int pit) {
 		int remainingStone = 1;
 		int nextPit = pit+1;
@@ -164,15 +233,31 @@ public class GameServiceImpl implements GameService {
 		
 	}
 
+	/**
+	 * Check whether a single stone was placed into an empty pit
+	 * @param numberOfStones - amount of stones
+	 * @return boolean, true if single stone, else false;
+	 */
 	private boolean oneStoneAddedToEmptyPit(int numberOfStones) {
 		return numberOfStones == 1;
 	}
 
+	/**
+	 * Simple method which takes a players pit and updates with the amount of stones
+	 * @param game - used to locate the pits
+	 * @param pit - pit to be updated
+	 * @param stones - amount of stones to be added
+	 */
 	private void updateStonesInPit(Game game, int pit, int stones) {
 		game.getBoard().getPits().replace(pit, stones);
 		
 	}
 	
+	/**
+	 * Gathers the pit location of the opponents board
+	 * @param pit - players selected pit
+	 * @return - opponents pit location
+	 */
 	private int oppositePitLocation(int pit) {
 		int pitDiff = pit;
 		while (pit != 12) {

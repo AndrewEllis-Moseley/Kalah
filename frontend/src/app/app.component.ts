@@ -1,8 +1,6 @@
 import { Component } from "@angular/core";
 import * as Stomp from "stompjs";
 import * as SockJS from "sockjs-client";
-import $ from "jquery";
-import { AngularWaitBarrier } from "blocking-proxy/built/lib/angular_wait_barrier";
 
 @Component({
   selector: "app-root",
@@ -10,7 +8,7 @@ import { AngularWaitBarrier } from "blocking-proxy/built/lib/angular_wait_barrie
   styleUrls: ["./app.component.scss"]
 })
 export class AppComponent {
-  private endpoint = "/kalah-websocket";
+  private endpoint = "/ws-kalah-game";
   private title = "Kalah";
   private stompClient;
   private sessionId = Math.random()
@@ -37,43 +35,18 @@ export class AppComponent {
     let ws = new SockJS(this.endpoint);
     this.stompClient = Stomp.over(ws);
     let that = this;
-    console.log("Setting up connection");
-    console.log("About to connect");
     this.stompClient.connect({}, function(frame) {
-      console.log("Going to subscribe ... ");
-      that.stompClient.subscribe(
-        `/topic/connection/${that.sessionId}`,
-        payload => {
-          console.log("Subscribe: Incoming message: " + payload.body);
-        },
-        error => {
-          console.log("Subscribe: error: " + error);
-        },
-        () => {
-          console.log("Subscribe, On complete");
-        }
-      );
-
-      that.stompClient.subscribe(
-        `/topic/connection/${that.sessionId}`,
-        status => {
-          that.showStatus(JSON.parse(status.body));
-        }
-      );
-
       that.stompClient.subscribe(
         `/topic/updateBoard/${that.sessionId}`,
         view => {
           that.updateBoard(JSON.parse(view.body));
         }
       );
-
       that.sendName(playerName);
     });
   }
 
   updateBoard(game) {
-    console.log("GAME: ", game);
     this.pits = game.board.pits;
     this.status = game.gameStatus;
     this.gameId = game.gameId;
@@ -90,7 +63,6 @@ export class AppComponent {
   }
 
   showStatus(message) {
-    console.log("SHOW STATUS CALLED?????", message);
     this.gameId = message.gameId;
   }
 

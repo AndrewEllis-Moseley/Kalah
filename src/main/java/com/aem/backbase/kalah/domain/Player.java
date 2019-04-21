@@ -4,11 +4,9 @@ import java.util.ArrayList;
 
 /**
  * @author Andrew Ellis-Moseley
- * @dateCreate 09/04/2019
  * 
- * This class contains the information needed for a player to take part in the game.
- * Each game can only have two players, for this the index of a player will either be 1 (Player 1) or 2 (Player 2).
- * Each player requires a unique session in order to trace and return the correct information.
+ * Player class contains a players unique session, name and id as well as setting their board range
+ * and house index
  *
  */
 public class Player {

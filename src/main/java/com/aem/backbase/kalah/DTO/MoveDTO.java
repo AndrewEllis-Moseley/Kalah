@@ -5,6 +5,8 @@ package com.aem.backbase.kalah.DTO;
 
 /**
  * @author Andrew Ellis-Moseley
+ * 
+ * DTO used to store the details of a players move to be used as part of the {@link GameServiceImpl}
  *
  */
 public class MoveDTO {

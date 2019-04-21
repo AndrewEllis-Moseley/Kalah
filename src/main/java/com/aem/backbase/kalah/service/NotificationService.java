@@ -14,9 +14,6 @@ import com.aem.backbase.kalah.domain.Player;
  */
 public interface NotificationService {
 	
-	void notifyPlayerOfStatus(ArrayList<Player> arrayList, String status, int gameId);
-	
-	void notifyWhosMoving(ArrayList<Player> players, Game game);
-
 	void updatePlayersWithLatestGame(ArrayList<Player> players, Game game);
+	
 }

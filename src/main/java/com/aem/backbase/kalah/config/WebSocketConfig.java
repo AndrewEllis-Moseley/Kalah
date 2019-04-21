@@ -6,6 +6,8 @@ package com.aem.backbase.kalah.config;
 /**
  * @author Andrew Ellis-Moseley
  *
+ * WebSocketConfig class contains the endpoints which allows a player to register to the websocket
+ *
  */
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -26,8 +28,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-    	System.out.println("************ HITTING REGISTER STOMP ENDPOINTS ******************");
-        registry.addEndpoint("/kalah-websocket").withSockJS();  
+        registry.addEndpoint("/ws-kalah-game").withSockJS();  
     }
 
 }

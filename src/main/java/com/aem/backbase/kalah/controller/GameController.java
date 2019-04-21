@@ -10,6 +10,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import com.aem.backbase.kalah.DTO.MoveDTO;
 import com.aem.backbase.kalah.service.GameService;
 
+/**
+ * 
+ * @author Andrew Ellis-Moseley
+ * 
+ * GameController class contains the message mapping a player can use in other to
+ * interact with a game
+ *
+ */
 @Controller 
 public class GameController {
 
@@ -19,16 +27,12 @@ public class GameController {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@MessageMapping("/game/{sessionId}")
     public void getConnection(@DestinationVariable String sessionId, @Payload String name) throws Exception {
-		System.out.println("******CREATING GAME******");
 		gameService.createGame(sessionId, name);
-		System.out.println("******GAME CREATED******");
     }
 	
 	@MessageMapping("/move/{sessionId}")
     public void move(@DestinationVariable String sessionId, @Payload MoveDTO moveDTO) throws Exception {
-		System.out.println("******MAKING A MOVE******");
         gameService.move(moveDTO.getGameId(), moveDTO.getPit());
-        System.out.println("******MOVE COMPLETE******");
     }
 	
 }
