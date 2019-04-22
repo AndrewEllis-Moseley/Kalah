@@ -5,6 +5,8 @@ package com.aem.backbase.kalah.domain.enums;
 
 /**
  * @author Andrew Ellis-Moseley
+ * 
+ * All states for a game
  *
  */
 public enum Status {

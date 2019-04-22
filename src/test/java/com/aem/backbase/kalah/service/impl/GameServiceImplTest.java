@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.aem.backbase.kalah.domain.Game;
+import com.aem.backbase.kalah.domain.enums.State;
 import com.aem.backbase.kalah.domain.enums.Status;
 import com.aem.backbase.kalah.service.NotificationService;
 
@@ -42,7 +43,9 @@ public class GameServiceImplTest {
 	public void createGameTest() {
 		System.out.println("createGameTest");
 		Game game = gameServiceImpl.createGame("mockSession", "Frank");
-		assertEquals(game.getGameId(), 5);
+		
+		assertEquals(game.getGameId(), 3);
+		assertEquals(game.getGameState(), State.OPEN);
 		assertEquals(game.getGameStatus(), Status.AWAITING_PLAYER.getStatus());
 		assertEquals(game.getPlayers().size(), 1);
 	}
@@ -51,7 +54,9 @@ public class GameServiceImplTest {
 	public void createGameSecondPlayerTest() {
 		System.out.println("createGameSecondPlayerTest");
 		Game game = gameServiceImpl.createGame("mockSession", "Frank");
-		gameServiceImpl.createGame("mockSession", "Jess");
+		gameServiceImpl.createGame("mockSession", "Sophie");
+		
+		assertEquals(game.getGameState(), State.LOCKED);
 		assertEquals(game.getGameStatus(), Status.PLAYER_ONE_TURN.getStatus());
 		assertEquals(game.getPlayers().size(), 2);
 	}
@@ -61,9 +66,9 @@ public class GameServiceImplTest {
 		System.out.println("basicMoveTest");
 		Game game = gameServiceImpl.createGame("mockSession", "Frank");
 		gameServiceImpl.createGame("mockSession", "Sophie");
-		
 		gameServiceImpl.move(game.getGameId(), 1);
 		int pitValue = game.getBoard().getPits().get(1);
+		
 		assertEquals(pitValue, 0);
 		assertEquals(game.getGameStatus(), Status.PLAYER_TWO_TURN.getStatus());
 		}
@@ -95,6 +100,7 @@ public class GameServiceImplTest {
 		int nextPit = game.getBoard().getPits().get(2);
 		int oppositePit = game.getBoard().getPits().get(9);
 		int movingPlayerHouse = game.getBoard().getPits().get(6);
+		
 		assertEquals(selectedPit, 0);
 		assertEquals(nextPit, 0);
 		assertEquals(oppositePit, 8);
@@ -110,6 +116,7 @@ public class GameServiceImplTest {
 		gameServiceImpl.move(game.getGameId(), 0);
 		int movingPlayerHouse = game.getBoard().getPits().get(6);
 		int selectedPit = game.getBoard().getPits().get(0);
+		
 		assertEquals(selectedPit, 0);
 		assertEquals(movingPlayerHouse, 1); 
 		assertEquals(game.getGameStatus(), Status.PLAYER_ONE_ANOTHER_TURN.getStatus());
@@ -124,6 +131,7 @@ public class GameServiceImplTest {
 		gameServiceImpl.move(game.getGameId(), 4);
 		int selectedPit = game.getBoard().getPits().get(4);
 		int nextPit = game.getBoard().getPits().get(5);
+		
 		assertEquals(selectedPit, 0);
 		assertEquals(nextPit, 7);
 		assertEquals(game.getGameStatus(), Status.PLAYER_TWO_TURN.getStatus());
@@ -156,6 +164,7 @@ public class GameServiceImplTest {
 		game.getBoard().setPits(pits);
 		
 		gameServiceImpl.move(game.getGameId(), 5);
+		
 		assertEquals(game.getGameStatus(), Status.PLAYER_TWO_WINS.getStatus());
 	}
 	

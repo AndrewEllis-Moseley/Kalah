@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.aem.backbase.kalah.domain.enums.State;
 import com.aem.backbase.kalah.domain.enums.Status;
 
 /**
@@ -17,6 +18,7 @@ import com.aem.backbase.kalah.domain.enums.Status;
 public class Game {
 	
 	private int gameId;
+	private State gameState;
 	private String gameStatus;
 	private static final int PLAYER_ONE_ID = 1;
 	ArrayList<Player> players = new ArrayList<>();
@@ -28,6 +30,7 @@ public class Game {
 	
 	public Game(String name, String session) {
 		this.setGameId(GAME_ID++);
+		this.setGameState(State.OPEN);
 		this.setGameStatus(Status.AWAITING_PLAYER.getStatus());
 		this.addPlayer(PLAYER_ONE_ID, name, session);
 		this.board = new Board();
@@ -40,6 +43,14 @@ public class Game {
 
 	public void setGameId(int gameId) {
 		this.gameId = gameId;
+	}
+	
+	public State getGameState() {
+		return gameState;
+	}
+
+	public void setGameState(State state) {
+		this.gameState = state;
 	}
 
 	public String getGameStatus() {

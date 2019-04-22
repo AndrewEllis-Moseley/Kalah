@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.aem.backbase.kalah.domain.Game;
 import com.aem.backbase.kalah.domain.Player;
+import com.aem.backbase.kalah.domain.enums.State;
 import com.aem.backbase.kalah.domain.enums.Status;
 import com.aem.backbase.kalah.service.GameService;
 import com.aem.backbase.kalah.service.NotificationService;
@@ -44,19 +45,8 @@ public class GameServiceImpl implements GameService {
 	public Game createGame(String session, String playerName) {
 		if (gameList.size() > 0) {
 			for (Game g : gameList.values()) {
-				switch (g.getGameStatus()) {
-					case "Awaiting Player" :
-						return joinActiveGame(g, playerName, session);
-						
-					case "In Progress" : 
-					case "Player One Turn" :
-					case "Player Two Turn" :
-					case "Player One Has Another Turn" :
-					case "Player Two Has Another Turn" :
-						return createNewGame(playerName, session);
-						
-						default :
-							System.out.println("Do nothing");
+				if (g.getGameState().equals(State.OPEN)) {
+					return joinActiveGame(g, playerName, session);	
 				}
 			}
 		}
@@ -71,8 +61,8 @@ public class GameServiceImpl implements GameService {
 	 */
 	private Game createNewGame(String playerName, String session) {
 		Game game = new Game(playerName, session);
-		gameList.put(game.getGameId(), game); 
 		notificationService.updatePlayersWithLatestGame(game.getPlayers(), game);
+		gameList.put(game.getGameId(), game); 
 		return game;
 	}
 	
@@ -85,6 +75,7 @@ public class GameServiceImpl implements GameService {
 	 */
 	private Game joinActiveGame(Game game, String playerName, String session) {
 		game.setGameStatus(Status.PLAYER_ONE_TURN.getStatus());
+		game.setGameState(State.LOCKED);
 		game.addPlayer(PLAYER_TWO_ID, playerName, session);
 		notificationService.updatePlayersWithLatestGame(game.getPlayers(), game);
 		return game;

@@ -21,7 +21,7 @@ public class NotificationServiceImplTest {
 	SimpMessagingTemplate template;
 	
 	@InjectMocks
-	private NotificationServiceImpl notificationServiceImpl = new NotificationServiceImpl();
+	private NotificationServiceImpl notificationServiceImpl;
 	
 	@Before
     public void init() {
@@ -44,7 +44,5 @@ public class NotificationServiceImplTest {
 		for (Player p: game.getPlayers()) {
 			verify(template).convertAndSend("/topic/updateBoard/" + p.getPlayerSession(), game);
 		}
-		
-		
 	}
 }

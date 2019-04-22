@@ -10,5 +10,5 @@ import org.junit.runners.Suite;
 })		
 
 public class JunitTest {				
-			// This class remains empty, it is used only as a holder for the above annotations		
+			// Used only as a holder for the above annotations		
 }
