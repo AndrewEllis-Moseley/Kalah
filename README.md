@@ -37,7 +37,7 @@ To start game:
 5. Play until the application notifies you that a player has won
 
 # Unit Tests 
-To Be Updated
+Full unit testing of impl services.
 
 # JavaDocs
 All classes have detailed descriptions of what they do and how they should function
